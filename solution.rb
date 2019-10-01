@@ -4,40 +4,33 @@ class Deck
 
     attr_accessor :cards
 
-    @@rank = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
-    @@suit= ["Hearts", "Clubs", "Diamonds", "Spades"]
-
     def initialize
-        @@rank.each do |rank|
-            @@suit.each do |suit|
-                Card.new(rank: rank, suit: suit, deck: self)
+        @cards = []
+        ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+        suits = ["Hearts", "Clubs", "Diamonds", "Spades"]
+
+        ranks.each do |rank|
+            suits.each do |suit|
+                @cards << Card.new(suit, rank)
             end
         end
     end
 
-    def cards
-        Card.all.select do |card|
-            card.deck == self
-        end
-    end
-
     def choose_card
-        random_card = self.cards.sample 
-        random_card.deck = nil
-        random_card
+        index = rand(@cards.length)
+        @cards.delete_at(index)
     end
         
 end
 
 class Card
-    attr_accessor :rank, :suit, :deck
+    attr_accessor :rank, :suit
 
     @@all = []
 
-    def initialize(rank:, suit:, deck:)
-        @rank = rank
+    def initialize(suit, rank)
         @suit = suit
-        @deck = deck
+        @rank = rank
         @@all << self 
     end
 
